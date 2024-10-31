@@ -5,8 +5,13 @@ from utils import validate_cat_breed
 
 
 def create_spycat(db: Session, spycat: SpyCatCreate):
+    print(spycat.__dict__)
         
-    db_spycat = SpyCat(**spycat.dict())
+    db_spycat = SpyCat()
+    db_spycat.name=spycat.name
+    db_spycat.experience_years=spycat.experience_years
+    db_spycat.breed=spycat.breed
+    db_spycat.salary=spycat.salary
     db.add(db_spycat)
     db.commit()
     db.refresh(db_spycat)

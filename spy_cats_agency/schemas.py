@@ -2,7 +2,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
-
 class TargetBase(BaseModel):
     name: str
     country: str
@@ -28,10 +27,11 @@ class MissionCreate(MissionBase):
 class Mission(MissionBase):
     id: int
     cat_id: int
-    targets: List[Target] = []
+    targets: List[Target] = Field(default_factory=list)
     
     class Config:
         orm_mode = True
+
 
 class SpyCatBase(BaseModel):
     name: str

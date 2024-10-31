@@ -17,9 +17,8 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/spycats/", response_model=SpyCat)
+@app.post("/spycats/", response_model=SpyCatCreate)
 def create_spycat(spycat: SpyCatCreate, db: Session = Depends(get_db)):
-    print(spycat.__dict__)
     try:
         return crud.create_spycat(db=db, spycat=spycat)
     except ValueError as e:
