@@ -1,14 +1,17 @@
 from sqlalchemy.orm import Session
 from models import SpyCat, Mission, Target
 from schemas import SpyCatCreate, MissionCreate, TargetCreate
+from utils import validate_cat_breed
 
 
 def create_spycat(db: Session, spycat: SpyCatCreate):
+        
     db_spycat = SpyCat(**spycat.dict())
     db.add(db_spycat)
     db.commit()
     db.refresh(db_spycat)
     return db_spycat
+
 
 def get_spycat(db: Session, spycat_id: int):
     return db.query(SpyCat).filter(SpyCat.id == spycat_id).first()
@@ -37,7 +40,6 @@ def create_mission(db: Session, mission_data: MissionCreate, cat_id: int):
     db.commit()
     db.refresh(db_mission)
 
-    # Додаємо цілі до місії
     for target_data in mission_data.targets:
         db_target = Target(**target_data.dict(), mission_id=db_mission.id)
         db.add(db_target)

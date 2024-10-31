@@ -19,7 +19,12 @@ def get_db():
 
 @app.post("/spycats/", response_model=SpyCat)
 def create_spycat(spycat: SpyCatCreate, db: Session = Depends(get_db)):
-    return crud.create_spycat(db=db, spycat=spycat)
+    print(spycat.__dict__)
+    try:
+        return crud.create_spycat(db=db, spycat=spycat)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 @app.get("/spycats/{spycat_id}", response_model=SpyCat)
 def read_spycat(spycat_id: int, db: Session = Depends(get_db)):
