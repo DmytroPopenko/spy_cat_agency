@@ -1,4 +1,5 @@
 # main.py
+from utils import validate_cat_breed
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine
@@ -19,10 +20,13 @@ def get_db():
 
 @app.post("/spycats/", response_model=SpyCatCreate)
 def create_spycat(spycat: SpyCatCreate, db: Session = Depends(get_db)):
-    try:
-        return crud.create_spycat(db=db, spycat=spycat)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    spy_cat_validation = validate_cat_breed(spycat.breed) if spycat.breed else False
+
+    if spy_cat_validation:
+        try:
+            return crud.create_spycat(db=db, spycat=spycat)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get("/spycats/{spycat_id}", response_model=SpyCat)

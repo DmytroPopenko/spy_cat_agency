@@ -4,9 +4,7 @@ from schemas import SpyCatCreate, MissionCreate, TargetCreate
 from utils import validate_cat_breed
 
 
-def create_spycat(db: Session, spycat: SpyCatCreate):
-    print(spycat.__dict__)
-        
+def create_spycat(db: Session, spycat: SpyCatCreate):      
     db_spycat = SpyCat()
     db_spycat.name=spycat.name
     db_spycat.experience_years=spycat.experience_years
